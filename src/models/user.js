@@ -9,6 +9,8 @@ const User = mongoose.Schema({
   newsletter: {type: Boolean, default: true, required: true},
   created: {type: Date, required: true},
   updated: {type: Date, required: true},
+  zone: {type: String},
+  zoneCode: {type: String},
   status: {type: String, default: 'p'}
 });
 

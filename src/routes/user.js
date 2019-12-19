@@ -30,6 +30,8 @@ router.post('/register', (req, res) => {
           newsletter: req.body.newsletter,
           created: new Date(),
           updated: new Date(),
+          zone: req.body.zone,
+          zoneCode: req.body.zoneCode,
           status: 'a'
         }).save((err, doc) => {
           if(err) {
