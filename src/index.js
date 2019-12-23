@@ -28,6 +28,7 @@ app.use(express.static(path.join(__dirname)));
 //Api Router
 app.use("/api/user", require("./routes/user"));
 app.use("/api/todo", require("./routes/todo"));
+app.use("/api/event", require("./routes/event"));
 app.use("/api/timetracker", require("./routes/time-tracker"));
 app.use("/api/preference", require("./routes/preference"));
 
