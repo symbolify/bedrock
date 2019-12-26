@@ -133,7 +133,7 @@ router.get("/profile", Authorize.verifyToken, (req, res) => {
     return false;
   }
   User.findOne({ _id: res.locals.uid })
-    .select({ _id: 0, name: 1, email: 1 })
+    .select({ _id: 0, name: 1, email: 1, gender: 1, dob: 1 })
     .exec((err, doc) => {
       if (err) {
         res.status(400).json(JSON.stringify(responseCode.AUTH.INVAL_REQ));
