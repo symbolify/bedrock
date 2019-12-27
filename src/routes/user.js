@@ -163,7 +163,9 @@ router.put("/profile", Authorize.verifyToken, (req, res) => {
             {
               $set: {
                 name: req.body.name,
-                email: req.body.email
+                email: req.body.email,
+                dob: req.body.dob,
+                gender: req.body.gender
               }
             }
           ).exec((err, update) => {
