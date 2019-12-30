@@ -73,6 +73,13 @@ module.exports = {
       data: "Profile updated."
     }
   },
+  PREFERENCE: {
+    UPD_PREFERENCE: {
+      code: "UPD_PREFERENCE",
+      type: "string",
+      data: "Preference updated."
+    }
+  },
   PASSWORD: {
     UPD_PASS: {
       code: "UPD_PASS",

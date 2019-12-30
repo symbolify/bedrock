@@ -122,14 +122,14 @@ router.post("/auth", (req, res) => {
 });
 router.post("/verify", Authorize.verifyToken, (req, res) => {
   if (!res.locals.authenticated) {
-    res.status(403).json(JSON.stringify(responseCode.AUTH.INVAL_AUTH));
+    //res.status(403).json(JSON.stringify(responseCode.AUTH.INVAL_AUTH));
     return false;
   }
   res.status("202").json(JSON.stringify(responseCode.VERIFY.VAL_SUCC));
 });
 router.get("/profile", Authorize.verifyToken, (req, res) => {
   if (!res.locals.authenticated) {
-    res.status(403).json(JSON.stringify(responseCode.AUTH.INVAL_AUTH));
+    //res.status(403).json(JSON.stringify(responseCode.AUTH.INVAL_AUTH));
     return false;
   }
   User.findOne({ _id: res.locals.uid })
@@ -145,7 +145,7 @@ router.get("/profile", Authorize.verifyToken, (req, res) => {
 });
 router.put("/profile", Authorize.verifyToken, (req, res) => {
   if (!res.locals.authenticated) {
-    res.status(403).json(JSON.stringify(responseCode.AUTH.INVAL_AUTH));
+    //res.status(403).json(JSON.stringify(responseCode.AUTH.INVAL_AUTH));
     return false;
   }
   User.find({ email: req.body.email, _id: { $ne: res.locals.uid } }).exec(
@@ -185,9 +185,62 @@ router.put("/profile", Authorize.verifyToken, (req, res) => {
     }
   );
 });
+
+
+router.get("/preference", Authorize.verifyToken, (req, res) => {
+  if (!res.locals.authenticated) {
+    //res.status(403).json(JSON.stringify(responseCode.AUTH.INVAL_AUTH));
+    return false;
+  }
+  User.findOne({ _id: res.locals.uid })
+    .select({ _id: 0, zone: 1, zoneCode: 1 })
+    .exec((err, doc) => {
+      if (err) {
+        res.status(400).json(JSON.stringify(responseCode.AUTH.INVAL_REQ));
+      } else if (doc) {
+        responseCode.PROFILE.INFO.data = doc;
+        res.status("200").json(JSON.stringify(responseCode.PROFILE.INFO.data));
+      }
+    });
+});
+
+
+router.put("/preference", Authorize.verifyToken, (req, res) => {
+  if (!res.locals.authenticated) {
+    //res.status(403).json(JSON.stringify(responseCode.AUTH.INVAL_AUTH));
+    return false;
+  }
+  User.updateOne(
+    {
+      _id: res.locals.uid
+    },
+    {
+      $set: {
+        zone: req.body.zone,
+        zoneCode: req.body.zoneCode,
+        updated: new Date()
+      }
+    }
+  ).exec((err, update) => {
+    if (err) {
+      res
+        .status(500)
+        .json(JSON.stringify(responseCode.PROFILE.SVR_ERR));
+    } else if (update) {
+      res
+        .status("200")
+        .json(JSON.stringify(responseCode.PREFERENCE.UPD_PREFERENCE));
+    }
+  });
+});
+
+
+
+
+
 router.put("/change-password", Authorize.verifyToken, (req, res) => {
   if (!res.locals.authenticated) {
-    res.status(403).json(JSON.stringify(responseCode.AUTH.INVAL_AUTH));
+    //res.status(403).json(JSON.stringify(responseCode.AUTH.INVAL_AUTH));
     return false;
   }
   bcrypt.hash(req.body.newPassword, 10, (err, newPass) => {
